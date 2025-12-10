@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "insecured_api_key_DEV_MODE")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "insecured_api_key_DEV_MODE")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

@@ -4,7 +4,6 @@ from django.core.exceptions import ImproperlyConfigured
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
 def get_env_var(name: str) -> str:
     """
     Get the environment variable or raise an error.
@@ -16,9 +15,9 @@ def get_env_var(name: str) -> str:
         raise ImproperlyConfigured(f"Set the {name} environment variable")
 
 
-SECRET_KEY = get_env_var("SECRET_KEY")
+SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
 
-DEBUG = get_env_var("DEBUG")
+DEBUG = os.environ.get("DJANGO_DEBUG", "False")
 
 DATABASES = {
     "default": {
@@ -31,8 +30,8 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = get_env_var("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = get_env_var("DJANGO_ALLOWED_HOSTS").split(",")
 
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip() for origin in get_env_var("CSRF_TRUSTED_ORIGINS").split(",")
+    origin.strip() for origin in get_env_var("DJANGO_CSRF_TRUSTED_ORIGINS").split(",")
 ]
