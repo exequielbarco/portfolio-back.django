@@ -1,5 +1,5 @@
-#from rest_framework.response import Response
-#from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework.decorators import api_view
 from rest_framework import viewsets, permissions, generics
 from .models import AboutPage
 from .serializers import AboutPageSerializer
@@ -19,9 +19,25 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+
 class AboutPageViewSet(viewsets.ModelViewSet):
-    queryset = AboutPage.objects.all()
+    queryset = AboutPage.objects.select_related("owner").all()
     serializer_class = AboutPageSerializer
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        language = self.request.query_params.get("language")
+        
+        valid_languages = dict(AboutPage.LANGUAGE_CHOICES).keys()
+
+        if language and language.lower() in valid_languages:
+            queryset = queryset.filter(language=language)
+            
+        if not queryset.exists():
+            return AboutPage.objects.filter(id=1)
+        
+        return queryset
+
 
 # @api_view(["GET"])
 # def get_aboutpage(request):

@@ -2,6 +2,9 @@ from .base import *
 import os
 from django.core.exceptions import ImproperlyConfigured
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 def get_env_var(name: str) -> str:
     """
     Get the environment variable or raise an error.
@@ -12,17 +15,10 @@ def get_env_var(name: str) -> str:
     except KeyError:
         raise ImproperlyConfigured(f"Set the {name} environment variable")
 
+
 SECRET_KEY = get_env_var("SECRET_KEY")
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-DEBUG = False
-
-ALLOWED_HOSTS = get_env_var("ALLOWED_HOSTS").split(",")
-
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip() for origin in get_env_var("CSRF_TRUSTED_ORIGINS").split(",")
-]
+DEBUG = get_env_var("DEBUG")
 
 DATABASES = {
     "default": {
@@ -34,3 +30,9 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
+
+ALLOWED_HOSTS = get_env_var("ALLOWED_HOSTS").split(",")
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip() for origin in get_env_var("CSRF_TRUSTED_ORIGINS").split(",")
+]
