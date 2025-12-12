@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "backend.portfolio",
+    "backend.portfolio.apps.PortfolioConfig",
 ]
 
 REST_FRAMEWORK = {
